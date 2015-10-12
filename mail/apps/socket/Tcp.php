@@ -17,8 +17,10 @@ class Tcp extends ZSwoole
         if (empty($data)) {
             return;
         }
-        $taskId = $serv->task($data);
-        $serv->send($fd, $taskId.'_'.$fromId);
+        $taskId = $serv->task(substr($data, 4));
+        $sendStr = $taskId.'_'.$fromId;
+        $sendData = pack('N', strlen($sendStr)) . $sendStr;
+        $serv->send($fd, $sendData);
     }
 
     public function onTask($server, $taskId, $fromId, $data)

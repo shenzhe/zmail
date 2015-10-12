@@ -62,6 +62,11 @@ $config = [
         'task_worker_num' => 16,                                 //工作进程数
         'max_request' => 0,                            //单个进程最大处理请求数
         'debug_mode' => 0,                                  //打开调试模式
+        'open_length_check'     => true,
+        'package_length_type'   => 'N',
+        'package_length_offset' => 0,       //第N个字节是包长度的值
+        'package_body_offset'   => 4,       //第几个字节开始计算长度
+        'package_max_length'    => 2000000,  //协议最大长度
     ),
     'mail' => [     //邮件服务相关配置
         'smtp_host' => 'smtp.163.com',                  //邮箱的smtp地址
