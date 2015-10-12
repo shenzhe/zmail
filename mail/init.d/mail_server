@@ -1,0 +1,100 @@
+#! /bin/sh
+
+#php路径
+PHP_BIN=/usr/bin/php
+
+#代码根目录
+SERVER_PATH=/home/shenzhe/work/github/zmail/mail
+
+getMasterPid()
+{
+    PID=`/bin/ps axu|grep zmail|grep server|grep running|awk '{print $2}'`
+    echo $PID
+}
+
+getManagerPid()
+{
+    MID=`/bin/ps axu|grep zmail|grep server|grep manager|awk '{print $2}'`
+    echo $MID
+}
+case "$1" in
+        start)
+                PID=`getMasterPid`
+                if [ -n "$PID" ]; then
+                    echo -n "mail server is running"
+                    exit 1
+                fi
+                echo -n "Starting mail server "
+                $PHP_BIN $SERVER_PATH/webroot/main.php default
+                echo " done"
+        ;;
+
+        stop)
+                PID=`getMasterPid`
+                if [ -z "$PID" ]; then
+                    echo -n "mail server is not running"
+                    exit 1
+                fi
+                echo -n "Gracefully shutting down mail server "
+
+                kill $PID
+                echo " done"
+        ;;
+
+        status)
+                PID=`getMasterPid`
+                if [ -n "$PID" ]; then
+                    echo -n "mail server is running"
+                else
+                    echo -n "mail server is not running"
+                fi
+        ;;
+
+        force-quit)
+                $0 stop
+        ;;
+
+        restart)
+                $0 stop
+                $0 start
+        ;;
+
+        reloadworker)
+                MID=`getManagerPid`
+                if [ -z "$MID" ]; then
+                    echo -n "mail server is not running"
+                    exit 1
+                fi
+
+                echo -n "Reload service mail_server "
+
+                kill -USR1 $MID
+
+                echo " done"
+        ;;
+
+        reloadtask)
+                MID=`getManagerPid`
+                if [ -z "$MID" ]; then
+                    echo -n "mail server is not running"
+                    exit 1
+                fi
+
+                echo -n "Reload service mail_server"
+
+                kill -USR2 $MID
+
+                echo " done"
+        ;;
+
+        reloadall)
+                $0 reloadworker
+                $0 reloadtask
+        ;;
+
+        *)
+                echo "Usage: $0 {start|stop|force-quit|restart|reloadall/reloadworker/reloadtask|status}"
+                exit 1
+        ;;
+
+esac
