@@ -16,7 +16,7 @@ class Mail
         $mail->SMTPAuth = true;
         $mail->Username = ZConfig::getField('mail', 'username');
         $mail->Password = ZConfig::getField('mail', 'password');
-        $mail->setFrom(ZConfig::getField('mail', 'from', $mail->Username), ZConfig::getField('mail', 'sendname', 'layabox开放平台'));
+        $mail->setFrom(ZConfig::getField('mail', 'from', $mail->Username), ZConfig::getField('mail', 'sendname', 'zmail_server'));
         $mail->addAddress($to);
         $mail->Subject = $title;
         $mail->Body = $content;
