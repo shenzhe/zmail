@@ -16,18 +16,19 @@ class Client
     public static function init()
     {
         if(!self::$client) {
-            $client = new swoole_client(SWOOLE_SOCK_TCP);
-            $client->set(array(
-                'open_length_check'     => true,
-                'package_length_type'   => 'N',
-                'package_length_offset' => 0,       //第N个字节是包长度的值
-                'package_body_offset'   => 4,       //第几个字节开始计算长度
-                'package_max_length'    => 2000000,  //协议最大长度
-            ));
-            if (!$client->connect('127.0.0.1', 8996, 1))
-            {
+            $client = new swoole_client(SWOOLE_SOCK_TCP|SWOOLE_KEEP);
+            if(!$client->isConnected()) {
+                $client->set(array(
+                    'open_length_check' => true,
+                    'package_length_type' => 'N',
+                    'package_length_offset' => 0,       //第N个字节是包长度的值
+                    'package_body_offset' => 4,       //第几个字节开始计算长度
+                    'package_max_length' => 2000000,  //协议最大长度
+                ));
+                if (!$client->connect('127.0.0.1', 8996, 1)) {
 //                throw new MyException('client connect timeout', ERROR::CONNECTION_TIMEOUT);
-                return false;
+                    return false;
+                }
             }
             self::$client = $client;
         }
