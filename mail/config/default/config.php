@@ -68,6 +68,7 @@ $config = [
         'smtp_port' => 25,
         'username' => 'test@163.com',                   //修改为自己的邮箱
         'password' => '123456',                         //修改为自己的密码
+        'sendname' => 'zmail.server',                   //发送者名称
     ],
     'route' => [  //url重写
         'static' => [
