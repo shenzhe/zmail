@@ -1,6 +1,6 @@
 #! /bin/sh
 
-#php路径
+#php路径，如不知道在哪，可以用whereis php尝试
 PHP_BIN=/usr/bin/php
 
 #代码根目录
