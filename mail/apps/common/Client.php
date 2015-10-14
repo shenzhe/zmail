@@ -26,7 +26,7 @@ class Client
                     'package_max_length' => 2000000,  //协议最大长度
                 ));
                 if (!$client->connect('127.0.0.1', 8996, 1)) {
-//                throw new MyException('client connect timeout', ERROR::CONNECTION_TIMEOUT);
+//                    throw new MyException('client connect timeout', ERROR::CONNECTION_TIMEOUT);
                     return false;
                 }
             }
